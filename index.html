@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ฝากรูป</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="@sweetalert2/themes/dark/dark.css">
+    <script src="sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="icon" type="image/png" sizes="512x512"
+        href="https://raw.githubusercontent.com/jarmonxd/Image/main/RTX_Best_Huge_Yet.webp">
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>อัปโหลดรูปภาพ new</h1>
+        <p class="file-size-warning" style="color: red;">⚠️ ห้ามใส่ภาพขนาดเกิน 5 MB</p>
+        <form action="upload.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*">
+            <div class="button-group">
+
+                <button id="pasteBtn" type="button" class="paste-btn"><i data-lucide="clipboard"></i>วางรูป</button>
+                <h2></h2>
+                <button type="submit" class="upload-btn"><i data-lucide="hard-drive-download"></i> อัปโหลด</button>
+                
+            </div>
+        </form>
+        </form>
+
+        <div id="result"></div>
+        <div class="url-container" style="display:none;">
+            <input type="text" id="imageUrl" readonly>
+            <button id="copyBtn" title="คัดลอก URL">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm-1 4l6 6v10c0 1.1-.9 2-2 2H7.99C6.89 23 6 22.1 6 21l.01-14c0-1.1.89-2 1.99-2h7zm-1 7h5.5L14 6.5V12z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div id="history">
+            <h2><i data-lucide="align-horizontal-justify-start"></i> ประวัติการอัปโหลดล่าสุด</h2>
+            <ul class="history-list"></ul>
+        </div>
+
+        <div class="ttt">
+            <i data-lucide="hammer" class="button-icon"></i>
+            <a href="https://mon.in.th/">Crafted by jarmon</a>
+        </div>
+    </div>
+
+    <div id="copiedTooltip" class="copied-tooltip">คัดลอกแล้ว!</div>
+
+    <div id="previewPopup" class="popup-overlay">
+        <div class="popup-content">
+            <img id="previewImage" src="" alt="Preview Image">
+            <button class="close-btn" onclick="closePreview()">โอเค! ปิดหน้าต่างนี้</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+
+        const form = document.querySelector('form');
+        const resultDiv = document.getElementById('result');
+        const imageUrlInput = document.getElementById('imageUrl');
+        const urlContainer = document.querySelector('.url-container');
+        const copyBtn = document.getElementById('copyBtn');
+        const copiedTooltip = document.getElementById('copiedTooltip');
+        const historyList = document.querySelector('.history-list');
+
+        const baseUrl = "https://pic.nerohub.pro";
+
+        function updateHistory(imageUrl) {
+            let history = JSON.parse(localStorage.getItem('uploadHistory')) || [];
+            history.unshift(imageUrl);
+            history = history.slice(0, 3);
+            localStorage.setItem('uploadHistory', JSON.stringify(history));
+            displayHistory();
+        }
+
+        function copyToClipboard(url) {
+  navigator.clipboard.writeText(url).then(() => {
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "คัดลอก URL แล้ว!",
+      showConfirmButton: false,
+      timer: 1500,
+      toast: true,
+      background: '#333',
+      iconColor: '#03dac6',
+      customClass: {
+        title: 'swal2-title'
+      }
+    });
+  });
+}
+
+function displayHistory() {
+  let history = JSON.parse(localStorage.getItem('uploadHistory')) || [];
+  historyList.innerHTML = history.map((url, index) => `
+    <li class="history-item">
+      <span class="history-number">${index + 1}</span>
+      <img src="${url}" alt="รูปภาพที่อัปโหลด">
+      <div class="buttons">
+        <button onclick="copyToClipboard('${url}')">คัดลอก URL</button>
+        <button onclick="previewImage('${url}')">Preview Image</button>
+      </div>
+    </li>
+  `).join('');
+}
+document.getElementById('pasteBtn').addEventListener('click', async () => {
+  try {
+    const clipboardItems = await navigator.clipboard.read();
+    for (const item of clipboardItems) {
+      if (item.types.includes('image/png') || item.types.includes('image/jpeg')) {
+        const blob = await item.getType('image/png') || await item.getType('image/jpeg');
+        const file = new File([blob], 'pasted_image.' + blob.type.split('/')[1], { type: blob.type });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        document.querySelector('input[type="file"]').files = dataTransfer.files;
+        Swal.fire({
+          icon: 'success',
+          title: 'วางรูปภาพสำเร็จ!',
+          text: 'คลิกปุ่มอัปโหลดเพื่อส่งรูปภาพ',
+          background: '#333',
+          iconColor: '#03dac6',
+          confirmButtonColor: '#03dac6'
+        });
+      }
+    }
+  } catch (err) {
+    Swal.fire({
+      icon: 'error',
+      title: 'เกิดข้อผิดพลาด',
+      text: 'ไม่สามารถวางรูปภาพได้',
+      background: '#333',
+      iconColor: '#cf6679',
+      confirmButtonColor: '#03dac6'
+    });
+  }
+});
+// ใช้ฟังก์ชันนี้สำหรับการคัดลอก URL จากปุ่มที่อยู่ข้าง input ด้วย
+copyBtn.addEventListener('click', () => {
+  const url = imageUrlInput.value;
+  navigator.clipboard.writeText(url).then(() => {
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "คัดลอก URL แล้ว!",
+      showConfirmButton: false,
+      timer: 1500,
+      toast: true,
+      background: '#333',
+      iconColor: '#03dac6',
+      customClass: {
+        title: 'swal2-title'
+      }
+    });
+  });
+});
+
+        function previewImage(url) {
+            const popup = document.getElementById('previewPopup');
+            const img = document.getElementById('previewImage');
+            img.src = url;
+            popup.style.display = 'flex';
+        }
+
+        function closePreview() {
+            const popup = document.getElementById('previewPopup');
+            popup.style.display = 'none';
+        }
+
+        displayHistory();
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+
+            fetch('upload.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const fullImageUrl = `${baseUrl}${data.url}`;
+                    resultDiv.innerHTML = `<img src="${fullImageUrl}" alt="รูปภาพที่อัปโหลด">`;
+                    imageUrlInput.value = fullImageUrl;
+                    urlContainer.style.display = 'flex';
+                    updateHistory(fullImageUrl);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 5000);
+                } else {
+                    resultDiv.innerHTML = `<p class="error">${data.error}</p>`;
+                    urlContainer.style.display = 'none';
+                }
+            });
+        });
+
+        copyBtn.addEventListener('click', () => {
+            imageUrlInput.select();
+            imageUrlInput.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            showTooltip(copyBtn);
+        });
+
+        function showTooltip(element) {
+            const rect = element.getBoundingClientRect();
+            copiedTooltip.style.top = `${rect.bottom + 10}px`;
+            copiedTooltip.style.left = `${rect.left + (rect.width - copiedTooltip.offsetWidth) / 2}px`;
+            copiedTooltip.classList.add('show');
+            setTimeout(() => {
+                copiedTooltip.classList.remove('show');
+            }, 1500);
+        }
+    </script>
+</body>
+
+</html>
