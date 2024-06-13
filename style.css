@@ -1,0 +1,569 @@
+@font-face {
+    font-family: 'LINE Seed Sans TH';
+    src: url('LINE/LINESeedSansTH_W_Bd.woff2') format('woff2'),
+        url('LINE/fLINESeedSansTH_W_Rg.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'LINE Seed Sans TH', sans-serif;
+    background: url('https://raw.githubusercontent.com/jarmonxd/Image/main/%E2%80%94Pngtree%E2%80%94black%20luxury%20background%20with%20gilter_1157166.png');
+    background-color: #1f1f1f;
+    background-image: var(--background-image);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 2rem 0;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: rgba(43, 43, 43, 0.9);
+    /* เพิ่มความโปร่งใสเพื่อให้เห็นพื้นหลัง */
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    max-width: 90%;
+    width: 400px;
+}
+
+h1 {
+    color: transparent;
+    background: linear-gradient(45deg, #f1f1f1, #e0ff00);
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+p {
+    font-size: 18px;
+    background: linear-gradient(45deg, hsl(0, 100%, 92%), #f4ff9d);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input[type="file"] {
+    margin-bottom: 1rem;
+    color: #e0e0e0;
+    background-color: #333;
+    border: 1px solid #555;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    background-color: #bb86fc;
+    border: none;
+    color: #1f1f1f;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Kanit', sans-serif;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #a277ff;
+}
+
+button {
+    background-color: #03dac6;
+    border: none;
+    color: #1f1f1f;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: 600;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+button:hover {
+    background-color: #00bfa6;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.upload-btn {
+    flex: 0 0 70%;
+    background-color: #03dac6;
+}
+
+.upload-btn:hover {
+    background-color: #00bfa6;
+}
+
+.paste-btn {
+    flex: 0 0 30%;
+    background-color: #bb86fc;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paste-btn:hover {
+    background-color: #a277ff;
+}
+
+.paste-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: #1f1f1f;
+}
+
+/* ลบสไตล์เก่าของ #pasteBtn ออก เพราะเราใช้ .paste-btn แทน */
+#pasteBtn {
+    background-color: #bb86fc;
+    margin-top: 10px;
+}
+
+#pasteBtn:hover {
+    background-color: #a277ff;
+}
+
+#result {
+    margin-top: 1.5rem;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+#imageUrl {
+    margin-top: 1rem;
+    padding: 15px;
+    background-color: #333;
+    border-radius: 10px;
+    word-break: break-all;
+    font-size: 0.9rem;
+    font-family: monospace;
+    text-align: left;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+#imageUrl::before {
+    content: 'URL รูปภาพ:';
+    display: block;
+    margin-bottom: 8px;
+    font-family: 'Kanit', sans-serif;
+    color: #03dac6;
+    font-weight: 600;
+}
+
+.error {
+    color: #cf6679;
+    font-weight: bold;
+    padding: 10px;
+    background-color: rgba(207, 102, 121, 0.1);
+    border-radius: 5px;
+    margin-top: 1rem;
+}
+
+.url-container {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    background-color: #333;
+    border-radius: 10px;
+    padding: 10px 15px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#imageUrl {
+    flex-grow: 1;
+    margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    word-break: break-all;
+    font-size: 0.9rem;
+    font-family: monospace;
+    color: #e0e0e0;
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+#copyBtn {
+    background-color: #bb86fc;
+    border: none;
+    color: #1f1f1f;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    margin-left: 10px;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+#copyBtn:hover {
+    background-color: #a277ff;
+}
+
+#copyBtn:active {
+    transform: scale(0.95);
+}
+
+#copyBtn svg {
+    width: 18px;
+    height: 18px;
+    fill: #1f1f1f;
+}
+
+.copied-tooltip {
+    position: fixed;
+    background-color: #03dac6;
+    color: #1f1f1f;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+
+.copied-tooltip.show {
+    opacity: 1;
+}
+
+#history {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #333;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+#history h2 {
+    color: #bb86fc;
+    font-size: 1.2rem;
+    margin-top: 0;
+    display: flex;
+    /* ใช้ flexbox เพื่อจัดเรียง */
+    align-items: center;
+    /* จัดให้อยู่กึ่งกลางในแนวตั้ง */
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0;
+    list-style-type: none;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+}
+
+.history-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #bb86fc;
+    margin-right: 15px;
+    width: 30px;
+    text-align: center;
+}
+
+.history-item img {
+    width: 100px;
+    height: auto;
+    border-radius: 5px;
+    margin-right: 1rem;
+}
+
+.history-item .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.history-item button {
+    background-color: #bb86fc;
+    border: none;
+    color: #1f1f1f;
+    padding: 8px 12px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.history-item button:hover {
+    background-color: #a277ff;
+}
+
+.history-item .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 5px;
+}
+
+.history-item:hover .overlay {
+    opacity: 1;
+}
+
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-content {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 15px;
+    max-width: 90%;
+    max-height: 50vh;
+    /* เปลี่ยนเป็น 50% ของความสูงหน้าจอ */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popup-content img {
+    max-width: 100%;
+    max-height: calc(50vh - 100px);
+    /* ปรับตามความสูงของหน้าต่าง */
+    display: block;
+    object-fit: contain;
+}
+
+.close-btn {
+    background-color: #03dac6;
+    border: none;
+    color: #1f1f1f;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: 600;
+    margin-top: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.close-btn {
+    background-color: #03dac6;
+    border: none;
+    color: #1f1f1f;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: 600;
+    margin-top: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.reloading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    color: #03dac6;
+    font-size: 1.2rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.reloading.show {
+    opacity: 1;
+}
+
+.ttt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    background: linear-gradient(45deg, #ad0000, #8fa100);
+    border-radius: 500px;
+    padding: 5px 15px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.ttt a {
+    color: #ffffff;
+    /* สีเทาเข้มสำหรับลิงก์ */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.ttt i {
+    margin-right: 2px;
+    color: #444;
+    /* สีเทาเข้มสำหรับไอคอน */
+}
+
+.button-icon {
+    margin-right: 5px;
+    /* ปรับระยะห่างตามที่คุณต้องการ */
+}
+
+.swal2-popup {
+    background-color: #333;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.swal2-title {
+    color: #03dac6;
+    font-family: 'LINE Seed Sans TH', sans-serif;
+}
+
+.swal2-icon.swal2-success {
+    border-color: #03dac6;
+    color: #03dac6;
+}
+
+.swal2-icon.swal2-success [class^='swal2-success-line'] {
+    background-color: #03dac6;
+}
+
+.swal2-icon.swal2-success .swal2-success-ring {
+    border-color: rgba(3, 218, 198, 0.3);
+}
+
+
+@media (max-width: 768px) {
+    .container {
+        max-width: 95%;
+        /* ขยายความกว้างของคอนเทนเนอร์ให้เต็มพื้นที่หน้าจอมากขึ้น */
+        padding: 1rem;
+        /* ลดระยะห่างภายในคอนเทนเนอร์ */
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        /* ปรับขนาดตัวอักษรให้เล็กลง */
+    }
+
+    p {
+        font-size: 16px;
+        /* ปรับขนาดตัวอักษรให้เล็กลง */
+    }
+
+    input[type="file"]::-webkit-file-upload-button,
+    button {
+        font-size: 14px;
+        /* ปรับขนาดตัวอักษรบนปุ่มให้เล็กลง */
+    }
+
+    .history-item img {
+        width: 60px;
+        /* ปรับขนาดรูปภาพในประวัติให้เล็กลง */
+    }
+
+    .history-item .buttons {
+        flex-direction: row;
+        /* จัดเรียงปุ่มในประวัติเป็นแนวนอน */
+        gap: 0.5rem;
+        /* เพิ่มระยะห่างระหว่างปุ่ม */
+    }
+
+    #history {
+        padding: 0.5rem;
+        /* ลดระยะห่างภายในส่วนประวัติ */
+    }
+
+    .ttt {
+        font-size: 0.8rem;
+        /* ปรับขนาดตัวอักษรในส่วน .ttt ให้เล็กลง */
+    }
+
+    .popup-content {
+        max-width: 100%;
+        /* ให้ popup ใช้ความกว้างเต็มหน้าจอโทรศัพท์ */
+        max-height: 80vh;
+        /* ให้ popup ใช้ความสูง 80% ของหน้าจอโทรศัพท์ */
+    }
+}
