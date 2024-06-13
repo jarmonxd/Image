@@ -1,5 +1,5 @@
 <?php
-$targetDir = "secure-storage/nero/"; 
+$targetDir = "/"; 
 $allowTypes = array('jpg', 'jpeg', 'png', 'gif','webp'); 
 
 if(isset($_FILES['image']['name'])){
@@ -22,7 +22,7 @@ if(isset($_FILES['image']['name'])){
         $targetFilePath = $targetDir . $newImageName;
 
         if(move_uploaded_file($imageTempName, $targetFilePath)){
-            $imageURL = "/secure-storage/nero/" . $newImageName; 
+            $imageURL = "/" . $newImageName; 
             echo json_encode(array('success' => 1, 'url' => $imageURL));
         } else {
             echo json_encode(array('success' => 0, 'error' => 'อัปโหลดไม่สำเร็จ'));
