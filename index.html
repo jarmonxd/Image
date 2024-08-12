@@ -1,2 +1,28 @@
-เข้ามาดูไร?
-https://discord.gg/nerohub
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoLocation Script</title>
+</head>
+<body>
+    <script>
+        var currenturl = window.location.href;
+
+        if (!currenturl.includes("g=")) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (coords) {
+                    var position = btoa(coords.coords.latitude + "," + coords.coords.longitude).replace(/=/g, "%3D");
+
+                    if (currenturl.includes("?")) {
+                        currenturl += ("&g=" + position);
+                    } else {
+                        currenturl += ("?g=" + position);
+                    }
+                    location.replace(currenturl);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
