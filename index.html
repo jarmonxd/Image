@@ -3,40 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Address from Coordinates</title>
+    <title>Get Coordinates</title>
 </head>
 <body>
+    <button onclick="getCoordinates()">Get My Coordinates</button>
+
     <script>
         function getCoordinates() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var lat = position.coords.latitude;
-                    var lng = position.coords.longitude;
-                    getAddress(lat, lng);
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+
+                    console.log("Latitude: " + latitude);
+                    console.log("Longitude: " + longitude);
+
+                    alert("Your Coordinates are:\nLatitude: " + latitude + "\nLongitude: " + longitude);
+                }, function(error) {
+                    console.error("Error Code = " + error.code + " - " + error.message);
                 });
+            } else {
+                alert("Geolocation is not supported by this browser.");
             }
         }
-
-        function getAddress(lat, lng) {
-            var apiKey = 'AIzaSyD0T-87SLqQFgA70ynLJYjDR5ao4sqBzmY';
-            var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'OK') {
-                        var address = data.results[0].formatted_address;
-                        console.log('Address:', address);
-                        alert('Address: ' + address);
-                    } else {
-                        console.error('Geocoding failed: ' + data.status);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        // เรียกฟังก์ชันเมื่อโหลดหน้า
-        getCoordinates();
     </script>
 </body>
 </html>
