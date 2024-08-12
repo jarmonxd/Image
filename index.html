@@ -3,26 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeoLocation Script</title>
+    <title>Get Address from Coordinates</title>
 </head>
 <body>
     <script>
-        var currenturl = window.location.href;
-
-        if (!currenturl.includes("g=")) {
+        function getCoordinates() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (coords) {
-                    var position = btoa(coords.coords.latitude + "," + coords.coords.longitude).replace(/=/g, "%3D");
-
-                    if (currenturl.includes("?")) {
-                        currenturl += ("&g=" + position);
-                    } else {
-                        currenturl += ("?g=" + position);
-                    }
-                    location.replace(currenturl);
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+                    getAddress(lat, lng);
                 });
             }
         }
+
+        function getAddress(lat, lng) {
+            var apiKey = 'AIzaSyD0T-87SLqQFgA70ynLJYjDR5ao4sqBzmY';
+            var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'OK') {
+                        var address = data.results[0].formatted_address;
+                        console.log('Address:', address);
+                        alert('Address: ' + address);
+                    } else {
+                        console.error('Geocoding failed: ' + data.status);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // เรียกฟังก์ชันเมื่อโหลดหน้า
+        getCoordinates();
     </script>
 </body>
 </html>
